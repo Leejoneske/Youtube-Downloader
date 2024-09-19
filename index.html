@@ -34,1097 +34,1136 @@
   <link rel="canonical" href="https://youtube-snap.vercel.app/">
   <link rel="icon" href="https://youtube-snap.vercel.app/image/favicon.ico" type="image/x-icon">
 
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css'>
   <style>
     @import url(https://fonts.googleapis.com/css?family=Nunito);
     @import url('https://fonts.googleapis.com/css?family=Orbitron:400,500&display=swap');
-    
-        :root {
-            --primary-color: #f39c12;
-            --secondary-color: #0ebeff;
-            --text-color: #FFF;
-            --background-color: #000000;
-            --error-color: #ff0000;
-        }
-
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100dvh;
-            background: var(--background-color);
-            font-family: "Droid Sans Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            color: var(--text-color);
-        }
-
-        #app {
-          height: 100%;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-        }
-
-        header {
-          padding: 2em;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          border-bottom: 1px solid rgba(48, 52, 60, 0.75);
-        }
-
-        iframe {
-          max-width: 100%;
-          margin: 0 auto;
-        }
-
-        ::placeholder {
-          opacity: .5;
-        }
-
-        .top-menu ul {
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        .top-menu ul li {
-          margin: 0 10px;
-        }
-
-        #form {
-          padding: 2em;
-          text-align: center;
-          border-bottom: 1px solid rgba(48, 52, 60, 0.75);
-        }
-
-        .wrap {
-          padding: 20px 0;
-          margin: 0 auto;
-        }
-
-        .wrap button {
-          font-weight: bolder;
-          font-size: 22px;
-          background: #000;
-          color: var(--secondary-color);
-          border: 1px solid;
-          width: 100%;
-          cursor: pointer;
-          padding: 0 5px;
-          line-height: 40px;
-          transition: background-color .2s ease-out;
-        }
-
-        .wrap button:nth-child(2n+1) {
-          margin-right: 6px;
-        }
-
-        .wrap button:hover {
-          background-color: #2bcdee29;
-        }
-
-        button#slider-start-next:active, button#slider-next:active {
-          transform: translateX(4px);
-        }
-
-        button#slider-start-prev:active, button#slider-end-prev:active {
-          transform: translateX(-4px);
-        }
-
-        #ytplayer {
-          display: flex;
-          flex-flow: column;
-          justify-content: center;
-          max-width: 1700px;
-          margin: 0 auto;
-          padding: 2em;
-          border-bottom: 1px solid rgba(48, 52, 60, 0.75);
-        }
-
-        #prevtime, #nexttime {
-          flex: 1;
-          color: var(--secondary-color);
-          font-weight: bolder;
-          font-size: 24px;
-          color: var(--secondary-color);
-          cursor: no-drop;
-          text-align: center;
-          border: 1px solid;
-          line-height: 35px;
-          transition: background-color .2s ease-out;
-        }
-
-        #prevtime:hover, #nexttime:hover {
-          background-color: #2BCDEE14;
-        }
-
-        #prevtime:active {
-          transform: translateX(-4px);
-        }
-
-        #nexttime:active {
-          transform: translateX(4px);
-        }
-
-        .controls {
-          flex-grow: 1;
-        }
-
-        .controls .info {
-          margin-bottom: 1px;
-          border-bottom: 1px solid var(--secondary-color);
-          padding: 10px 0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .controls .info div, h5 {
-          margin: .5em 0;
-        }
-
-        .irs--round .irs-min, .irs--round .irs-max {
-          color: #888;
-        }
-
-        #form {
-          padding: 50px;
-        }
-
-        .form {
-          max-width: 800px;
-          height: 80px;
-          margin: 0 auto;
-          margin-top: 25px;
-        }
-
-        .form label {
-          flex-basis: 100%;
-          width: 100%;
-          margin-bottom: 5px;
-        }
-
-        .form form {
-          display: flex;
-        }
-
-        #d-pscreen {
-          opacity: .5;
-          cursor: no-drop;
-        }
-
-        .btn {
-          display: inline-block;
-          background: transparent;
-          color: inherit;
-          font: inherit;
-          border: 0;
-          outline: 0;
-          padding: 0;
-          transition: all 200ms ease-in;
-          cursor: pointer;
-        }
-
-        .btn--primary {
-          background: var(--primary-color);
-          color: #fff;
-          box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
-          border-radius: 2px;
-          padding: 12px 10px;
-        }
-
-        .btn--primary:hover {
-          background: #f89406;
-        }
-
-        .btn--primary:active {
-          background: var(--primary-color);
-          box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn--inside {
-          position: relative;
-          z-index: 10;
-          flex-grow: 1;
-        }
-
-        .form__field {
-          min-width: calc(100% - 170px);
-          background: #fff;
-          color: #a3a3a3;
-          font: inherit;
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
-          border: 0;
-          outline: 0;
-          padding: 22px 18px;
-        }
-
-        .download ul {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          text-align: center;
-          align-items: center;
-          max-width: 750px;
-          margin: 0 auto;
-          color: #c2c4c9;
-        }
-
-        .download ul li:nth-child(odd) span {
-          order: 2;
-          margin-right: 15px;
-        }
-
-        .download ul li {
-          flex: calc(40% - 40px);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin: 20px;
-          cursor: pointer;
-          padding: 20px;
-          border: 1px solid transparent;
-          transition: border-color .4s ease;
-        }
-
-        .download ul li:hover {
-          border-color: var(--secondary-color);
-        }
-
-        .download img {
-          height: 36px;
-        }
-
-        .player-controls {
-          display: auto;
-          justify-content: space-between;
-          align-items: center;
-          padding: 10px;
-          margin-top: 15px;
-          background-color: #041318;
-        }
-
-        .player-controls div {
-          flex-grow: 1;
-        }
-
-        .player-controls div:nth-child(1) {
-          display: flex;
-          justify-content: flex-start;
-        }
-
-        .player-controls div:nth-child(3) {
-          display: flex;
-          justify-content: flex-end;
-        }
-
-        #time {
-          font-family: 'Orbitron', sans-serif;
-          background: none;
-          border: none;
-          color: var(--text-color);
-          text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--secondary-color), 0 0 30px var(--secondary-color), 0 0 40px var(--secondary-color), 0 0 55px var(--secondary-color), 0 0 75px var(--secondary-color);
-          text-align: center;
-          min-width: 130px;
-          font-size: 16px;
-          letter-spacing: 2px;
-          padding: 0 3px;
-          flex: 1;
-          cursor: pointer;
-        }
-
-        .preview {
-          width: 28%;
-          min-width: 200px;
-          margin: 0 auto;
-          text-align: center;
-        }
-
-        #preview {
-          font-size: 14px;
-          width: auto;
-          margin: 10px;
-          box-sizing: border-box !important;
-          padding: 3px 0;
-          color: var(--secondary-color);
-          cursor: pointer;
-          text-transform: uppercase;
-          border: 1px solid var(--secondary-color);
-          padding: 5px;
-          letter-spacing: 1px;
-        }
-
-        #preview:hover {
-          background-color: var(--secondary-color);
-          color: #000 !important;
-        }
-
-        @media(min-width: 992px) {
-          #time {
-            font-size: 20px;
-            min-width: 160px;
-          }
-
-          #ytplayer {
-            flex-flow: row;
-          }
-
-          iframe {
-            max-width: 100%;
-          }
-
-          .controls {
-            padding: 0 0 0 2em;
-          }
-
-          .controls h5 {
-            margin-top: 0;
-          }
-
-          .btn--inside {
-            margin-left: -96px;
-          }
-
-          .form__field {
-            min-width: calc(100% - 96px);
-          }
-
-          .form form {
-            display: block;
-          }
-
-          .btn--primary {
-            padding: 12px 36px;
-          }
-        }
-
-        .noselect {
-          outline: none;
-          -webkit-touch-callout: none;
-          -webkit-user-select: none;
-          -khtml-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-        }
-
-        #range-slider {
-          background: transparent;
-          border: 0;
-        }
-
-        #message-container {
-          position: fixed;
-          bottom: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          padding: 10px;
-          background-color: #000;
-          color: #fff;
-          border-radius: 5px;
-          opacity: 0;
-          transition: opacity 0.5s;
-        }
-
-        #ping-display {
-          position: absolute;
-          top: 10px;
-          left: 0;
-          padding: 0px;
-          margin-left: 15px;
-        }
-
-        .online {
-          color: green;
-          font-size: smaller;
-        }
-
-        .offline {
-          color: red;
-          font-size: smaller;
-        }
-
-        #error-message {
-          color: var(--error-color);
-          font-size: smaller;
-        }
-
-        footer {
-          background-color: var(--background-color);
-          color: var(--text-color);
-        }
-
-        #loading-indicator {
-          display: none;
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          background-color: rgba(0, 0, 0, 0.8);
-          color: #fff;
-          padding: 20px;
-          border-radius: 5px;
-        }
-        /* From Uiverse.io by vinodjangid07 */
-        .faq-button {
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          border: none;
-          background-color: #ffe53b;
-          background-image: linear-gradient(147deg, #ffe53b 0%, #ff2525 74%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.151);
-          position: absolute;
-          top: 40px;
-          right: 10px;
-        }
-
-        .faq-button svg {
-          height: 1em;
-          fill: white;
-        }
-
-        .faq-button:hover svg {
-          animation: jello-vertical 0.7s both;
-        }
-
-        @keyframes jello-vertical {
-          0% {
-            transform: scale3d(1, 1, 1);
-          }
-          30% {
-            transform: scale3d(0.75, 1.25, 1);
-          }
-          40% {
-            transform: scale3d(1.25, 0.75, 1);
-          }
-          50% {
-            transform: scale3d(0.85, 1.15, 1);
-          }
-          65% {
-            transform: scale3d(1.05, 0.95, 1);
-          }
-          75% {
-            transform: scale3d(0.95, 1.05, 1);
-          }
-          100% {
-            transform: scale3d(1, 1, 1);
-          }
-        }
-
-        .tooltip {
-          position: absolute;
-          top: -20px;
-          opacity: 0;
-          background-color: #ffe53b;
-          background-image: linear-gradient(147deg, #ffe53b 0%, #ff2525 74%);
-          color: white;
-          padding: 5px 10px;
-          border-radius: 5px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition-duration: 0.2s;
-          pointer-events: none;
-          letter-spacing: 0.5px;
-        }
-
-        .tooltip::before {
-          position: absolute;
-          content: "";
-          width: 10px;
-          height: 10px;
-          background-color: #ff2525;
-          background-size: 1000%;
-          background-position: center;
-          transform: rotate(45deg);
-          bottom: -15%;
-          transition-duration: 0.3s;
-        }
-
-        .faq-button:hover .tooltip {
-          top: -40px;
-          opacity: 1;
-          transition-duration: 0.3s;
-        }
-      </style>
-    </head>
-    <body>
-      <div id="ping-display">
-        ping: <span id="ping-value">--</span> ms
+
+    :root {
+      --primary-color: #f39c12;
+      --secondary-color: #0ebeff;
+      --text-color: #FFF;
+      --background-color: #000000;
+      --error-color: #ff0000;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100dvh;
+      background: var(--background-color);
+      font-family: "Droid Sans Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color: var(--text-color);
+    }
+
+    #app {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 2em;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(48, 52, 60, 0.75);
+    }
+
+    iframe {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    ::placeholder {
+      opacity: .5;
+    }
+
+    .top-menu ul {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .top-menu ul li {
+      margin: 0 10px;
+    }
+
+    #form {
+      padding: 2em;
+      text-align: center;
+      border-bottom: 1px solid rgba(48, 52, 60, 0.75);
+    }
+
+    .wrap {
+      padding: 20px 0;
+      margin: 0 auto;
+    }
+
+    .wrap button {
+      font-weight: bolder;
+      font-size: 22px;
+      background: #000;
+      color: var(--secondary-color);
+      border: 1px solid;
+      width: 100%;
+      cursor: pointer;
+      padding: 0 5px;
+      line-height: 40px;
+      transition: background-color .2s ease-out;
+    }
+
+    .wrap button:nth-child(2n+1) {
+      margin-right: 6px;
+    }
+
+    .wrap button:hover {
+      background-color: #2bcdee29;
+    }
+
+    button#slider-start-next:active, button#slider-next:active {
+      transform: translateX(4px);
+    }
+
+    button#slider-start-prev:active, button#slider-end-prev:active {
+      transform: translateX(-4px);
+    }
+
+    #ytplayer {
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      max-width: 1700px;
+      margin: 0 auto;
+      padding: 2em;
+      border-bottom: 1px solid rgba(48, 52, 60, 0.75);
+    }
+
+    #prevtime, #nexttime {
+      flex: 1;
+      color: var(--secondary-color);
+      font-weight: bolder;
+      font-size: 24px;
+      cursor: no-drop;
+      text-align: center;
+      border: 1px solid;
+      line-height: 35px;
+      transition: background-color .2s ease-out;
+    }
+
+    #prevtime:hover, #nexttime:hover {
+      background-color: #2BCDEE14;
+    }
+
+    #prevtime:active {
+      transform: translateX(-4px);
+    }
+
+    #nexttime:active {
+      transform: translateX(4px);
+    }
+
+    .controls {
+      flex-grow: 1;
+    }
+
+    .controls .info {
+      margin-bottom: 1px;
+      border-bottom: 1px solid var(--secondary-color);
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .controls .info div, h5 {
+      margin: .5em 0;
+    }
+
+    .irs--round .irs-min, .irs--round .irs-max {
+      color: #888;
+    }
+
+    .form {
+      max-width: 800px;
+      height: 80px;
+      margin: 0 auto;
+      margin-top: 25px;
+    }
+
+    .form label {
+      flex-basis: 100%;
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    .form form {
+      display: flex;
+    }
+
+    #d-pscreen {
+      opacity: .5;
+      cursor: no-drop;
+    }
+
+    .btn {
+      display: inline-block;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      border: 0;
+      outline: 0;
+      padding: 0;
+      transition: all 200ms ease-in;
+      cursor: pointer;
+    }
+
+    .btn--primary {
+      background: var(--primary-color);
+      color: #fff;
+      box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+      padding: 12px 10px;
+    }
+
+    .btn--primary:hover {
+      background: #f89406;
+    }
+
+    .btn--primary:active {
+      background: var(--primary-color);
+      box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn--inside {
+      position: relative;
+      z-index: 10;
+      flex-grow: 1;
+    }
+
+    .form__field {
+      min-width: calc(100% - 170px);
+      background: #fff;
+      color: #a3a3a3;
+      font: inherit;
+      box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+      border: 0;
+      outline: 0;
+      padding: 22px 18px;
+    }
+
+    .download ul {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      text-align: center;
+      align-items: center;
+      max-width: 750px;
+      margin: 0 auto;
+      color: #c2c4c9;
+    }
+
+    .download ul li:nth-child(odd) span {
+      order: 2;
+      margin-right: 15px;
+    }
+
+    .download ul li {
+      flex: calc(40% - 40px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px;
+      cursor: pointer;
+      padding: 20px;
+      border: 1px solid transparent;
+      transition: border-color .4s ease;
+    }
+
+    .download ul li:hover {
+      border-color: var(--secondary-color);
+    }
+
+    .download img {
+      height: 36px;
+    }
+
+    .player-controls {
+      display: auto;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin-top: 15px;
+      background-color: #041318;
+    }
+
+    .player-controls div {
+      flex-grow: 1;
+    }
+
+    .player-controls div:nth-child(1) {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .player-controls div:nth-child(3) {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #time {
+      font-family: 'Orbitron', sans-serif;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--secondary-color), 0 0 30px var(--secondary-color), 0 0 40px var(--secondary-color), 0 0 55px var(--secondary-color), 0 0 75px var(--secondary-color);
+      text-align: center;
+      min-width: 130px;
+      font-size: 16px;
+      letter-spacing: 2px;
+      padding: 0 3px;
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .preview {
+      width: 28%;
+      min-width: 200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    #preview {
+      font-size: 14px;
+      width: auto;
+      margin: 10px;
+      padding: 3px 0;
+      color: var(--secondary-color);
+      cursor: pointer;
+      text-transform: uppercase;
+      border: 1px solid var(--secondary-color);
+      padding: 5px;
+      letter-spacing: 1px;
+    }
+
+    #preview:hover {
+      background-color: var(--secondary-color);
+      color: #000 !important;
+    }
+
+    @media(min-width: 992px) {
+      #time {
+        font-size: 20px;
+        min-width: 160px;
+      }
+
+      #ytplayer {
+        flex-flow: row;
+      }
+
+      iframe {
+        max-width: 100%;
+      }
+
+      .controls {
+        padding: 0 0 0 2em;
+      }
+
+      .controls h5 {
+        margin-top: 0;
+      }
+
+      .btn--inside {
+        margin-left: -96px;
+      }
+
+      .form__field {
+        min-width: calc(100% - 96px);
+      }
+
+      .form form {
+        display: block;
+      }
+
+      .btn--primary {
+        padding: 12px 36px;
+      }
+    }
+
+    .noselect {
+      outline: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    #range-slider {
+      background: transparent;
+      border: 0;
+    }
+
+    #message-container {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px;
+      background-color: #000;
+      color: #fff;
+      border-radius: 5px;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    #ping-display {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      padding: 0px;
+      margin-left: 15px;
+    }
+
+    .online {
+      color: green;
+      font-size: smaller;
+    }
+
+    .offline {
+      color: red;
+      font-size: smaller;
+    }
+
+    #error-message {
+      color: var(--error-color);
+      font-size: smaller;
+    }
+
+    footer {
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    #loading-indicator {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    .faq-button {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      background-color: #ffe53b;
+      background-image: linear-gradient(147deg, #ffe53b 0%, #ff2525 74%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.151);
+      position: absolute;
+      top: 40px;
+      right: 10px;
+    }
+
+    .faq-button svg {
+      height: 1em;
+      fill: white;
+    }
+
+    .faq-button:hover svg {
+      animation: jello-vertical 0.7s both;
+    }
+
+    @keyframes jello-vertical {
+      0% {
+        transform: scale3d(1, 1, 1);
+      }
+      30% {
+        transform: scale3d(0.75, 1.25, 1);
+      }
+      40% {
+        transform: scale3d(1.25, 0.75, 1);
+      }
+      50% {
+        transform: scale3d(0.85, 1.15, 1);
+      }
+      65% {
+        transform: scale3d(1.05, 0.95, 1);
+      }
+      75% {
+        transform: scale3d(0.95, 1.05, 1);
+      }
+      100% {
+        transform: scale3d(1, 1, 1);
+      }
+    }
+
+    .tooltip {
+      position: absolute;
+      top: -20px;
+      opacity: 0;
+      background-color: #ffe53b;
+      background-image: linear-gradient(147deg, #ffe53b 0%, #ff2525 74%);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition-duration: 0.2s;
+      pointer-events: none;
+      letter-spacing: 0.5px;
+    }
+
+    .tooltip::before {
+      position: absolute;
+      content: "";
+      width: 10px;
+      height: 10px;
+      background-color: #ff2525;
+      background-size: 1000%;
+      background-position: center;
+      transform: rotate(45deg);
+      bottom: -15%;
+      transition-duration: 0.3s;
+    }
+
+    .faq-button:hover .tooltip {
+      top: -40px;
+      opacity: 1;
+      transition-duration: 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <div id="ping-display">
+    ping: <span id="ping-value">--</span> ms
+  </div>
+
+  <div id="message-container"></div>
+
+  <div id="loading-indicator">
+    <p>Loading...</p>
+  </div>
+
+  <button class="faq-button" onclick="window.location.href='faq.html';">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+      <path
+        d="M80 160c0-35.3 28.7-64 64-64h32c35.3 0 64 28.7 64 64v3.6c0 21.8-11.1 42.1-29.4 53.8l-42.2 27.1c-25.2 16.2-40.4 44.1-40.4 74V320c0 17.7 14.3 32 32 32s32-14.3 32-32v-1.4c0-8.2 4.2-15.8 11-20.2l42.2-27.1c36.6-23.6 58.8-64.1 58.8-107.7V160c0-70.7-57.3-128-128-128H144C73.3 32 16 89.3 16 160c0 17.7 14.3 32 32 32s32-14.3 32-32zm80 320a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"
+      ></path>
+    </svg>
+    <span class="tooltip">FAQ</span>
+  </button>
+
+  <section id="form">
+    <div class="desc">
+      <h1>YouTube downloader</h1>
+      <p>extract, video, audio, trim, cut, meme scenes from YouTube videos</p>
+    </div>
+
+    <div class="form">
+      <form>
+        <input class="url form__field" type="text" name="url" autocomplete="off" value="" placeholder="https://youtu.be/7JqQsVsWzJk?si=hh0cW4KSJIvx9pLq">
+        <button type="submit" class="btn btn--primary btn--inside">Process</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="ytplayer">
+    <div id="player" class="player"></div>
+
+    <div class="controls">
+      <div class="info">
+        <h5>Title of video</h5>
       </div>
 
-      <div id="message-container"></div>
+      <div class="wrap">
+        <input id="range-slider" type="text" name="range" value="" />
 
-      <div id="loading-indicator">
-        <p>Loading...</p>
+        <div class="player-controls">
+          <div>
+            <button id="slider-start-prev" class="slider-controls noselect" value="prev" title="Seek 0.1 sec"><<</button>
+            <button id="slider-start-next" class="slider-controls noselect" value="next" title="Seek 0.1 sec">>></button>
+          </div>
+
+          <div id="time" class="noselect" title="Pause/Resume">00:00:00.0</div>
+
+          <div>
+            <button id="slider-end-prev" class="slider-controls noselect" value="next" title="Seek 0.1 sec"><<</button>
+            <button id="slider-next" class="slider-controls noselect" value="prev" title="Seek 0.1 sec">>></button>
+          </div>
+        </div>
       </div>
 
-      <button class="faq-button" onclick="window.location.href='faq.html';">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-          <path
-            d="M80 160c0-35.3 28.7-64 64-64h32c35.3 0 64 28.7 64 64v3.6c0 21.8-11.1 42.1-29.4 53.8l-42.2 27.1c-25.2 16.2-40.4 44.1-40.4 74V320c0 17.7 14.3 32 32 32s32-14.3 32-32v-1.4c0-8.2 4.2-15.8 11-20.2l42.2-27.1c36.6-23.6 58.8-64.1 58.8-107.7V160c0-70.7-57.3-128-128-128H144C73.3 32 16 89.3 16 160c0 17.7 14.3 32 32 32s32-14.3 32-32zm80 320a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"
-          ></path>
-        </svg>
-        <span class="tooltip">FAQ</span>
-      </button>
+      <div class="preview">
+        <div><small>Duration: <span id="ytduration">00:00:00.0</span></small></div>
+        <div id="preview-button">Preview</div>
+      </div>
 
-      <section id="form">
-        <div class="desc">
-          <h1>YouTube downloader</h1>
-          <p>extract, video, audio, trim, cut, meme scenes from YouTube videos</p>
-        </div>
+      <div class="download">
+        <ul>
+          <li id="d-file" class="disabled"><span>Download video file</span> <img src="images/download (2).gif" alt="Download video file"></li>
+          <li id="d-audio" class="disabled"><span>Download audio file</span> <img src="images/download (2).gif" alt="Download audio file"></li>
+          <li id="d-gif" class="disabled"><span>Download GIF animation</span> <img src="images/download (2).gif" alt="Download GIF animation"></li>
+          <li id="d-pscreen" class="disabled"><span>Download screenshot</span> <img src="images/download (2).gif" alt="Download screenshot"></li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-        <div class="form">
-          <form>
-            <input class="url form__field" type="text" name="url" autocomplete="off" value="" placeholder="https://youtu.be/7JqQsVsWzJk?si=hh0cW4KSJIvx9pLq">
-            <button type="submit" class="btn btn--primary btn--inside">Process</button>
-          </form>
-        </div>
-      </section>
+  <footer id="footer">
+    <table style="border-collapse: collapse; width: 100%;">
+      <tbody>
+        <tr>
+          <td style="padding-top: 18px;"></td>
+        </tr>
+        <tr>
+          <td style="font-family: Arial, sans-serif; font-size: 9pt; line-height: 15pt; text-align: center; padding: 0 8% 0 8%; color: #B0B3B8; text-align: center; text-decoration: none">
+            <span class="appleLinksGrey">
+              Registered Office: BlackHat Team Ltd, Nairobi, Suite 7-001, 1 Kijabe Street, Kenya, EC2Y 5EJ, KE, KE Company Number: 04217916; VAT Registration Number: GB 208148618
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table style="border-collapse: collapse; width: 100%;">
+              <tbody>
+                <tr>
+                  <td style="padding: 0 8% 15px 8%; line-height: 15pt; font-family: Arial, sans-serif; font-size: 9pt; text-align: center;">
+                    <a href="README.txt" title="Privacy Policy" style="color: #767982; text-decoration: none; -webkit-text-size-adjust: none;" target="_blank" rel="noopener noreferrer">Privacy Policy</a> <span style="color: #767982;"> | </span>
+                    <a href="support.html" title="Contact us" style="color: #767982; text-decoration: none; -webkit-text-size-adjust: none;" target="_blank" rel="noopener noreferrer">Contact us</a> <span style="color: #767982;"> | </span>
+                    <a href="support.html" title="www.skyscanner.com" style="color: #767982; text-decoration: none; -webkit-text-size-adjust: none;" target="_blank" rel="noopener noreferrer">unityblackhat.42web.io</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </footer>
 
-      <section id="ytplayer">
-        <div id="player" class="player"></div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js'></script>
+  <script>
+    var min = 0;
+    var max_interval = 1800;
+    var step = 0.1;
+    var from = 0;
+    var to = 60;
+    var videotime = 0;
 
-        <div class="controls">
-          <div class="info">
-            <h5>Title of video</h5>
-          </div>
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-          <div class="wrap">
-            <input id="range-slider" type="text" name="range" value="" />
+    var player;
 
-            <div class="player-controls">
-              <div>
-                <button id="slider-start-prev" class="slider-controls noselect" value="prev" title="Seek 0.1 sec"><<</button>
-                <button id="slider-start-next" class="slider-controls noselect" value="next" title="Seek 0.1 sec">>></button>
-              </div>
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '315',
+        width: '560',
+        videoId: 'd-Co1_lvRDQ',
+        playerVars: {
+          'autoplay': 1,
+          'controls': 1,
+          'disablekb': 1,
+          'rel': 0,
+          'fs': 0,
+          'start': 0,
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
 
-              <div id="time" class="noselect" title="Pause/Resume">00:00:00.0</div>
+    function onPlayerStateChange(event) {
+      console.log('Player state changed:', event.data);
+    }
 
-              <div>
-                <button id="slider-end-prev" class="slider-controls noselect" value="next" title="Seek 0.1 sec"><<</button>
-                <button id="slider-next" class="slider-controls noselect" value="prev" title="Seek 0.1 sec">>></button>
-              </div>
-            </div>
-          </div>
+    function onPlayerReady(event) {
+      console.log('Player is ready.');
+      player.playVideo();
 
-          <div class="preview">
-            <div><small>Duration: <span id="ytduration">00:00:00.0</span></small></div>
-            <div id="preview">Preview</div>
-          </div>
+      var duration = player.getDuration();
+      if (isNaN(duration) || duration <= 0) {
+        console.error('Failed to get video duration. Retrying...');
+        setTimeout(onPlayerReady, 1000, event);
+        return;
+      }
 
-          <div class="download">
-            <ul>
-              <li id="d-file" class="disabled"><span>Download video file</span> <img src="images/download (2).gif"></li>
-              <li id="d-audio" class="disabled"><span>Download audio file</span> <img src="images/download (2).gif"></li>
-              <li id="d-gif" class="disabled"><span>Download GIF animation</span> <img src="images/download (2).gif"></li>
-              <li id="d-pscreen" class="disabled"><span>Download screenshot</span> <img src="images/download (2).gif"></li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      initRangeSlider(duration);
+      timeupdater = setInterval(updateTime, 100);
+    }
 
-      <footer id="footer">
-        <table cellpadding="0" cellspacing="0" border="0" style=" border-collapse: collapse; width: 100%;">
-          <tbody>
-            <tr>
-              <td style="padding-top: 18px;"></td>
-            </tr>
-            <tr>
-              <td style="font-family: Arial, sans-serif; font-size: 9pt; line-height: 15pt; text-align: center; padding: 0 8% 0 8%; color: #B0B3B8; text-align: center; text-decoration: none">
-                <span class="appleLinksGrey">
-                  Registered Office: BlackHat Team Ltd, Nairobi, Suite 7-001, 1 Kijabe Street, Kenya, EC2Y 5EJ, KE, KE Company Number: 04217916; VAT Registration Number: GB 208148618
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; width: 100%;">
-                  <tbody>
-                    <tr>
-                      <td style="padding: 0 8% 15px 8%; line-height: 15pt; font-family: Arial, sans-serif; font-size: 9pt; text-align: center;">
-                        <a href="README.txt" title="Privacy Policy" style="color: #767982; text-decoration: none; -webkit-text-size-adjust: none;" target="_blank">Privacy Policy</a> <span style="color: #767982;"> | </span>
-                        <a href="support.html" title="Contact us" style="color: #767982; text-decoration: none; -webkit-text-size-adjust: none;" target="_blank">Contact us</a> <span style="color: #767982;"> | </span>
-                        <a href="support.html" title="www.skyscanner.com" style="color: #767982; text-decoration: none; -webkit-text-size-adjust: none;" target="_blank">unityblackhat.42web.io</a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </footer>
+    function initRangeSlider(duration) {
+      var $d5 = $("#range-slider");
+      var $d5_buttons = $(".slider-controls");
+      $d5.ionRangeSlider({
+        type: "double",
+        skin: "round",
+        min: min,
+        max: duration,
+        max_interval: max_interval,
+        step: step,
+        from: from,
+        to: to,
+        drag_interval: true,
+        grid: false,
+        grid_snap: true,
+        prettify: hhmmsss_prettify,
+        onStart: function (data) {
+          limit_filter(data);
+        },
+        onChange: function (data) {
+          limit_filter(data);
+        },
+        onFinish: function (data) {
+          if (data.to > data.from) {
+            player.loadVideoById({
+              videoId: player.getVideoData()['video_id'],
+              startSeconds: data.from,
+              endSeconds: data.to
+            });
+          }
+        },
+        onUpdate: function (data) {}
+      });
 
-      <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-      <script src='https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js'></script>
-      <script>
-        var min = 0;
-        var max_interval = 1800;
-        var step = 0.1;
-        var from = 0;
-        var to = 60;
-        var videotime = 0;
+      var d5_instance = $d5.data("ionRangeSlider");
+      let durationDiff = d5_instance.old_to - d5_instance.old_from;
 
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        var player;
-
-        function onYouTubeIframeAPIReady() {
-          player = new YT.Player('player', {
-            height: '315',
-            width: '560',
-            videoId: 'gIOIvxFp7YM',
-            playerVars: {
-              'autoplay': 1,
-              'controls': 1,
-              'disablekb': 1,
-              'rel': 0,
-              'fs': 0,
-              'start': 0,
-            },
-            events: {
-              'onReady': onPlayerReady,
-              'onStateChange': onPlayerStateChange
-            }
+      $("#preview-button").click(function (e) {
+        if ((d5_instance.old_from - d5_instance.old_to) < 0) {
+          player.loadVideoById({
+            videoId: player.getVideoData()['video_id'],
+            startSeconds: d5_instance.old_from,
+            endSeconds: d5_instance.old_to
           });
         }
+      });
 
-        function onPlayerStateChange(event) {
-          console.log('Player state changed:', event.data);
-        }
+      $d5_buttons.on("mousedown", function (e) {
+        isHeldDown = true;
+        (function loop() {
+          if (!isHeldDown) return;
 
-        function onPlayerReady(event) {
-          console.log('Player is ready.');
-          player.playVideo();
+          let from = d5_instance.old_from;
+          let to = d5_instance.old_to;
 
-          var duration = player.getDuration();
-          if (isNaN(duration) || duration <= 0) {
-            console.error('Failed to get video duration. Retrying...');
-            setTimeout(onPlayerReady, 1000, event);
-            return;
+          if (e.target.id == "slider-start-prev" && durationDiff.toFixed(1) < max_interval) {
+            from = d5_instance.old_from - step;
           }
 
-          initRangeSlider(duration);
-          timeupdater = setInterval(updateTime, 100);
-        }
+          if (e.target.id == "slider-start-next" && durationDiff.toFixed(1) <= max_interval) {
+            from = d5_instance.old_from + step;
+          }
 
-        function initRangeSlider(duration) {
-          var $d5 = $("#range-slider");
-          var $d5_buttons = $(".slider-controls");
-          $d5.ionRangeSlider({
-            type: "double",
-            skin: "round",
-            min: min,
-            max: duration,
-            max_interval: max_interval,
-            step: step,
+          if (e.target.id == "slider-next" && durationDiff.toFixed(1) < max_interval) {
+            to = d5_instance.old_to + step;
+          }
+
+          if (e.target.id == "slider-end-prev" && durationDiff.toFixed(1) <= max_interval) {
+            to = d5_instance.old_to - step;
+          }
+
+          d5_instance.update({
             from: from,
-            to: to,
-            drag_interval: true,
-            grid: false,
-            grid_snap: true,
-            prettify: hhmmsss_prettify,
-            onStart: function (data) {
-              limit_filter(data);
-            },
-            onChange: function (data) {
-              limit_filter(data);
-            },
-            onFinish: function (data) {
-              if (data.to > data.from) {
-                player.loadVideoById({
-                  videoId: player.getVideoData()['video_id'],
-                  startSeconds: data.from,
-                  endSeconds: data.to
-                });
-              }
-            },
-            onUpdate: function (data) {}
+            to: to
           });
 
-          var d5_instance = $d5.data("ionRangeSlider");
-          let durationDiff = d5_instance.old_to - d5_instance.old_from;
+          setTimeout(loop, 125);
+        })();
+      }).on("mouseup mouseleave", function () {
+        isHeldDown = false;
+      });
+    }
 
-          $("#preview").click(function (e) {
-            if ((d5_instance.old_from - d5_instance.old_to) < 0) {
-              player.loadVideoById({
-                videoId: player.getVideoData()['video_id'],
-                startSeconds: d5_instance.old_from,
-                endSeconds: d5_instance.old_to
-              });
-            }
-          });
+    function limit_filter(data) {
+      let duration = data.to - data.from;
 
-          $d5_buttons.on("mousedown", function (e) {
-            isHeldDown = true;
-            (function loop() {
-              if (!isHeldDown) return;
+      if (duration == 0) {
+        $("#d-pscreen").css('opacity', '1').css('cursor', 'pointer');
+        $("#d-file").css('opacity', '0.5').css('cursor', 'no-drop');
+        $("#d-audio").css('opacity', '0.5').css('cursor', 'no-drop');
+        $("#d-gif").css('opacity', '0.5').css('cursor', 'no-drop');
+      } else {
+        $("#d-pscreen").css('opacity', '0.5').css('cursor', 'no-drop');
+        $("#d-file").css('opacity', '1').css('cursor', 'pointer');
+        $("#d-audio").css('opacity', '1').css('cursor', 'pointer');
+        $("#d-gif").css('opacity', '1').css('cursor', 'pointer');
+      }
 
-              let from = d5_instance.old_from;
-              let to = d5_instance.old_to;
+      if (duration >= 0.1 && duration <= 10) {
+        $("#d-gif").css('opacity', '1').css('cursor', 'pointer');
+      } else {
+        $("#d-gif").css('opacity', '0.5').css('cursor', 'no-drop');
+      }
 
-              if (e.target.id == "slider-start-prev" && durationDiff.toFixed(1) < max_interval) {
-                from = d5_instance.old_from - step;
-              }
+      let percentage = duration / max_interval * 100;
+      let color = hsl_col_perc(percentage, 0, 100);
+      $("#ytduration").text(hhmmsss_prettify(duration)).css('color', color);
+    }
 
-              if (e.target.id == "slider-start-next" && durationDiff.toFixed(1) <= max_interval) {
-                from = d5_instance.old_from + step;
-              }
+    $("#time").click(function (e) {
+      if (player.getPlayerState() == 2 || player.getPlayerState() == 5 || player.getPlayerState() == -1) {
+        player.playVideo();
+      } else {
+        player.pauseVideo();
+      }
+    });
 
-              if (e.target.id == "slider-next" && durationDiff.toFixed(1) < max_interval) {
-                to = d5_instance.old_to + step;
-              }
+    function hhmmsss_prettify(n) {
+      var sec_num = parseInt(n, 10);
+      var hours = Math.floor(sec_num / 3600);
+      var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+      var seconds = sec_num - (hours * 3600) - (minutes * 60);
+      var milisec = n;
 
-              if (e.target.id == "slider-end-prev" && durationDiff.toFixed(1) <= max_interval) {
-                to = d5_instance.old_to - step;
-              }
+      if (hours < 10) { hours = "0" + hours; }
+      if (minutes < 10) { minutes = "0" + minutes; }
+      if (seconds < 10) { seconds = "0" + seconds; }
+      if (milisec < 10) { milisec = "0" + milisec; }
+      return hours + ':' + minutes + ':' + seconds + '.' + (milisec % 1).toFixed(1).substring(2);
+    }
 
-              d5_instance.update({
-                from: from,
-                to: to
-              });
+    function seek(from) {
+      if (player.getPlayerState() == 1) {
+        player.pauseVideo();
+      }
+      if (player.getPlayerState() == 2) {
+        player.seekTo(from);
+      }
+    }
 
-              setTimeout(loop, 125);
-            })();
-          }).on("mouseup mouseleave", function () {
-            isHeldDown = false;
-          });
+    function hsl_col_perc(percent, start, end) {
+      var a = percent / 100,
+        b = (start - end) * a,
+        c = b + end;
+      // Return a CSS HSL string
+      return 'hsl(' + c + ', 100%, 50%)';
+    }
+
+    function updateTime() {
+      if (player && player.getCurrentTime && typeof player.getCurrentTime === 'function') {
+        var currentTime = player.getCurrentTime();
+        if (!isNaN(currentTime)) {
+          videotime = currentTime.toFixed(1);
+          $("#time").text(hhmmsss_prettify(videotime));
+        } else {
+          $("#error-message").text("Error: Current time is not a valid number.");
+        }
+      } else {
+        $("#error-message").text("Error: Player object or getCurrentTime method is not available.");
+      }
+    }
+
+    // DOWNLOAD MEDIA
+    const serverURL = 'https://c932a2a5-2dde-4763-abd8-87e0fd85c4d4-00-3194zsef37244.kirk.replit.dev';
+    
+
+    function validateAndEnableButtons() {
+      const url = $('.url').val().trim();
+      const socialMediaRegex = {
+        youtube: /(youtu(?:\.be|be\.com)\/(?:.*v(?:\/|=)|(?:.*\/)?)([\w'-]+))/i,
+        facebook: /(https?:\/\/(www\.)?facebook\.com\/.*)/i,
+        instagram: /(https?:\/\/(www\.)?instagram\.com\/.*)/i,
+        twitter: /(https?:\/\/(www\.)?twitter\.com\/.*)/i,
+        // add more social media regex patterns here if needed
+      };
+
+      let isValid = false;
+      for (const [platform, regex] of Object.entries(socialMediaRegex)) {
+        if (regex.test(url)) {
+          isValid = true;
+          break;
+        }
+      }
+
+      if (isValid) {
+        $('#d-file, #d-audio, #d-gif, #d-pscreen').removeClass('disabled').addClass('enabled').css({
+          'opacity': '1',
+          'cursor': 'pointer'
+        });
+      } else {
+        $('#d-file, #d-audio, #d-gif, #d-pscreen').removeClass('enabled').addClass('disabled').css({
+          'opacity': '0.5',
+          'cursor': 'no-drop'
+        });
+      }
+    }
+
+    // Attach the validation function to input changes
+    $('.url').on('input', function () {
+      validateAndEnableButtons();
+    });
+
+
+    $('form').on('submit', async function (e) {
+      e.preventDefault();
+      showLoadingIndicator();
+
+      const url = $('.url').val().trim();
+
+      if (url === '') {
+        showMessage('Please enter a URL.');
+        hideLoadingIndicator();
+        return;
+      }
+
+      validateAndEnableButtons();
+
+      if ($('.disabled').length > 0) {
+        showMessage('Invalid URL! Please provide a valid link from YouTube, Facebook, Instagram, or Twitter.');
+        hideLoadingIndicator();
+        return;
+      }
+
+      hideLoadingIndicator();
+    });
+
+    // Download button click handlers
+    $('#d-audio, #d-file, #d-gif, #d-pscreen').on('click', function () {
+      const url = $('.url').val();
+      if (!$(this).hasClass('disabled')) {
+        if (url === '') {
+          showMessage('Please enter a URL.');
+          return;
+        }
+        const format = $(this).attr('id').replace('d-', '');
+        downloadMedia(url, format);
+      }
+    });
+
+    async function downloadMedia(query, format) {
+      let endpoint;
+      switch (format) {
+        case 'audio':
+          endpoint = '/downloadmp3';
+          break;
+        case 'file':
+          endpoint = '/downloadmp4';
+          break;
+        case 'gif':
+          endpoint = '/downloadgif';
+          break;
+        case 'pscreen':
+          endpoint = '/downloadpscreen';
+          break;
+        default:
+          return;
+      }
+
+      const url = `${serverURL}${endpoint}?url=${query}`;
+      try {
+        const res = await fetch(url);
+        if (res.status === 200) {
+          const blob = await res.blob();
+          const a = document.createElement('a');
+          const objectURL = URL.createObjectURL(blob);
+          a.href = objectURL;
+          a.setAttribute('download', format === 'audio' ? 'audio.mp3' : format === 'file' ? 'video.mp4' : format === 'gif' ? 'animation.gif' : 'screenshot.png');
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(objectURL);
+          showMessage('Download successful.');
+        } else {
+          showMessage('Failed to download media.');
+        }
+      } catch (error) {
+        showMessage('Failed to download media: ' + error.message);
+      }
+    }
+
+    function showMessage(message) {
+      var messageContainer = document.getElementById("message-container");
+      messageContainer.innerText = message;
+      messageContainer.style.opacity = 1;
+      setTimeout(function () {
+        messageContainer.style.opacity = 0;
+      }, 5000);
+    }
+    // END DOWNLOAD MEDIA
+
+    function showLoadingIndicator() {
+      $('#loading-indicator').show();
+    }
+
+    function hideLoadingIndicator() {
+      $('#loading-indicator').hide();
+    }
+
+    $('#d-file, #d-audio, #d-gif, #d-pscreen').addClass('disabled');
+
+    $(function () {
+      $('form').submit(function (e) {
+        e.preventDefault();
+        const yturl = $('.url').val().trim();
+
+        if (yturl === '') {
+          showMessage('Please enter a URL.');
+          return;
         }
 
-        function limit_filter(data) {
-          let duration = data.to - data.from;
+        const regex = /(youtu(?:\.be|be\.com)\/(?:.*v(?:\/|=)|(?:.*\/)?)([\w'-]+))/i;
+        const ytid = yturl.match(regex);
 
-          if (duration == 0) {
-            $("#d-pscreen").css('opacity', '1').css('cursor', 'pointer');
-            $("#d-file").css('opacity', '0.5').css('cursor', 'no-drop');
-            $("#d-audio").css('opacity', '0.5').css('cursor', 'no-drop');
-            $("#d-gif").css('opacity', '0.5').css('cursor', 'no-drop');
+        if (ytid) {
+          if (ytid[2].length === 11) {
+            player.loadVideoById(ytid[2], 0);
+            $('.player-timing input').val('0:00:00.0');
           } else {
-            $("#d-pscreen").css('opacity', '0.5').css('cursor', 'no-drop');
-            $("#d-file").css('opacity', '1').css('cursor', 'pointer');
-            $("#d-audio").css('opacity', '1').css('cursor', 'pointer');
-            $("#d-gif").css('opacity', '1').css('cursor', 'pointer');
+            showMessage('Invalid YouTube ID! Please verify the link again.');
           }
+        } else {
+          showMessage('Invalid YouTube URL! Please copy the link again.');
+        }
+      });
+    });
 
-          if (duration >= 0.1 && duration <= 10) {
-            $("#d-gif").css('opacity', '1').css('cursor', 'pointer');
-          } else {
-            $("#d-gif").css('opacity', '0.5').css('cursor', 'no-drop');
-          }
+    // PING FUNCTION
+    let errorDisplayed = false;
+    let errorTimeout;
 
-          let percentage = duration / max_interval * 100;
-          let color = hsl_col_perc(percentage, 0, 100);
-          $("#ytduration").text(hhmmsss_prettify(duration)).css('color', color);
+    function showMessage(message, isPingError = false) {
+      const messageContainer = document.getElementById('message-container');
+      messageContainer.innerText = message;
+      messageContainer.style.opacity = 1;
+
+      if (isPingError) {
+        // Clear the previous timeout if it exists
+        if (errorTimeout) {
+          clearTimeout(errorTimeout);
         }
 
-        $("#time").click(function (e) {
-          if (player.getPlayerState() == 2 || player.getPlayerState() == 5 || player.getPlayerState() == -1) {
-            player.playVideo();
-          } else {
-            player.pauseVideo();
-          }
-        });
+        // Set a new timeout to hide the message after 15 seconds
+        errorTimeout = setTimeout(() => {
+          messageContainer.style.opacity = 0;
+          errorDisplayed = false;
+        }, 15000);
 
-        function hhmmsss_prettify(n) {
-          var sec_num = parseInt(n, 10);
-          var hours = Math.floor(sec_num / 3600);
-          var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-          var seconds = sec_num - (hours * 3600) - (minutes * 60);
-          var milisec = n;
+        errorDisplayed = true;
+      } else {
+        setTimeout(() => {
+          messageContainer.style.opacity = 0;
+        }, 5000);
+      }
+    }
 
-          if (hours < 10) { hours = "0" + hours; }
-          if (minutes < 10) { minutes = "0" + minutes; }
-          if (seconds < 10) { seconds = "0" + seconds; }
-          if (milisec < 10) { milisec = "0" + milisec; }
-          return hours + ':' + minutes + ':' + seconds + '.' + (milisec % 1).toFixed(1).substring(2);
+    function clearErrorMessage() {
+      const messageContainer = document.getElementById('message-container');
+      if (errorDisplayed) {
+        messageContainer.style.opacity = 0;
+        errorDisplayed = false;
+        if (errorTimeout) {
+          clearTimeout(errorTimeout);
         }
+      }
+    }
 
-        function seek(from) {
-          if (player.getPlayerState() == 1) {
-            player.pauseVideo();
-          }
-          if (player.getPlayerState() == 2) {
-            player.seekTo(from);
-          }
+    async function pingServer() {
+      const serverUrl = 'https://rogue-coherent-sale.glitch.me/ping';
+      try {
+        const startTime = performance.now();
+        const response = await fetch(serverUrl, { method: 'HEAD', cache: 'no-cache' });
+        const endTime = performance.now();
+
+        if (response.ok) {
+          const latency = endTime - startTime;
+          updatePingDisplay(latency);
+        } else {
+          throw new Error(`Server returned ${response.status} ${response.statusText}`);
         }
-
-        function hsl_col_perc(percent, start, end) {
-          var a = percent / 100,
-            b = (start - end) * a,
-            c = b + end;
-          // Return a CSS HSL string
-          return 'hsl(' + c + ', 100%, 50%)';
+      } catch (error) {
+        console.error('Server is offline', error);
+        if (!errorDisplayed) {
+          showMessage(`Server is offline: ${error.message}`, true);
         }
+        updatePingDisplay(undefined);
+      }
+    }
 
-        function updateTime() {
-          if (player && player.getCurrentTime && typeof player.getCurrentTime === 'function') {
-            var currentTime = player.getCurrentTime();
-            if (!isNaN(currentTime)) {
-              videotime = currentTime.toFixed(1);
-              $("#time").text(hhmmsss_prettify(videotime));
-            } else {
-              $("#error-message").text("Error: Current time is not a valid number.");
-            }
-          } else {
-            $("#error-message").text("Error: Player object or getCurrentTime method is not available.");
-          }
+    function updatePingDisplay(latency) {
+      const pingValueElement = document.getElementById('ping-value');
+      pingValueElement.classList.remove('online', 'offline');
+
+      if (typeof latency === 'number') {
+        pingValueElement.textContent = 'Online';
+        pingValueElement.classList.add('online');
+        // If the server is back online, clear any existing error message
+        clearErrorMessage();
+      } else {
+        pingValueElement.textContent = 'Offline';
+        pingValueElement.classList.add('offline');
+      }
+    }
+
+    pingServer();
+    setInterval(pingServer, 5000);
+
+
+    // Detect links from keyboard input
+    $('.url').on('input', function () {
+      const url = $(this).val().trim();
+
+      if (url === '') {
+        showMessage('Please enter a URL.');
+        return;
+      }
+
+      const socialMediaRegex = {
+        youtube: /(youtu(?:\.be|be\.com)\/(?:.*v(?:\/|=)|(?:.*\/)?)([\w'-]+))/i,
+        facebook: /(https?:\/\/(www\.)?facebook\.com\/.*)/i,
+        instagram: /(https?:\/\/(www\.)?instagram\.com\/.*)/i,
+        twitter: /(https?:\/\/(www\.)?twitter\.com\/.*)/i,
+      };
+
+      let isValid = false;
+      for (const [platform, regex] of Object.entries(socialMediaRegex)) {
+        if (regex.test(url)) {
+          isValid = true;
+          break;
         }
+      }
 
-        // DOWNLOAD MEDIA
-        const serverURL = 'https://c932a2a5-2dde-4763-abd8-87e0fd85c4d4-00-3194zsef37244.kirk.replit.dev';
+      if (!isValid) {
+        showMessage('Invalid URL! Please provide a valid link from YouTube, Facebook, Instagram, or Twitter.');
+        return;
+      }
 
-        function validateAndEnableButtons() {
-          const url = $('.url').val().trim();
-          const socialMediaRegex = {
-            youtube: /(youtu(?:\.be|be\.com)\/(?:.*v(?:\/|=)|(?:.*\/)?)([\w'-]+))/i,
-            facebook: /(https?:\/\/(www\.)?facebook\.com\/.*)/i,
-            instagram: /(https?:\/\/(www\.)?instagram\.com\/.*)/i,
-            twitter: /(https?:\/\/(www\.)?twitter\.com\/.*)/i,
-            // add more social media regex patterns here if needed
-          };
+      // Automatically process the URL if it's valid
+      $('form').submit();
+    });
 
-          let isValid = false;
-          for (const [platform, regex] of Object.entries(socialMediaRegex)) {
-            if (regex.test(url)) {
-              isValid = true;
-              break;
-            }
-          }
+    // Help button functionality
+    $(document).ready(function () {
+      setTimeout(function () {
+        $('#help-button').css('opacity', '1');
+      }, 2000);
 
-          if (isValid) {
-            $('#d-file, #d-audio, #d-gif, #d-pscreen').removeClass('disabled').addClass('enabled').css({
-              'opacity': '1',
-              'cursor': 'pointer'
-            });
-          } else {
-            $('#d-file, #d-audio, #d-gif, #d-pscreen').removeClass('enabled').addClass('disabled').css({
-              'opacity': '0.5',
-              'cursor': 'no-drop'
-            });
-          }
-        }
+      $('#help-button').click(function () {
+        $('#help-message').css('opacity', '1');
+        setTimeout(function () {
+          $('#help-message').css('opacity', '0');
+        }, 10000);
+      });
+    });
+  </script>
+</body>
+</html>
 
-        // Attach the validation function to input changes
-        $('.url').on('input', function () {
-          validateAndEnableButtons();
-        });
-
-        $('form').on('submit', async function (e) {
-          e.preventDefault();
-          showLoadingIndicator();
-
-          const url = $('.url').val().trim();
-
-          if (url === '') {
-            showMessage('Please enter a URL.');
-            hideLoadingIndicator();
-            return;
-          }
-
-          validateAndEnableButtons();
-
-          if ($('.disabled').length > 0) {
-            showMessage('Invalid URL! Please provide a valid link from YouTube, Facebook, Instagram, or Twitter.');
-            hideLoadingIndicator();
-            return;
-          }
-
-          hideLoadingIndicator();
-        });
-
-        // Download button click handlers
-        $('#d-audio, #d-file, #d-gif, #d-pscreen').on('click', function () {
-          const url = $('.url').val();
-          if (!$(this).hasClass('disabled')) {
-            if (url === '') {
-              showMessage('Please enter a URL.');
-              return;
-            }
-            const format = $(this).attr('id').replace('d-', '');
-            downloadMedia(url, format);
-          }
-        });
-
-        async function downloadMedia(query, format) {
-          let endpoint;
-          switch (format) {
-            case 'audio':
-              endpoint = '/downloadmp3';
-              break;
-            case 'file':
-              endpoint = '/downloadmp4';
-              break;
-            case 'gif':
-              endpoint = '/downloadgif';
-              break;
-            case 'pscreen':
-              endpoint = '/downloadpscreen';
-              break;
-            default:
-              return;
-          }
-
-          const url = `${serverURL}${endpoint}?url=${query}`;
-          try {
-            const res = await fetch(url);
-            if (res.status === 200) {
-              const blob = await res.blob();
-              const a = document.createElement('a');
-              const objectURL = URL.createObjectURL(blob);
-              a.href = objectURL;
-              a.setAttribute('download', format === 'audio' ? 'audio.mp3' : format === 'file' ? 'video.mp4' : format === 'gif' ? 'animation.gif' : 'screenshot.png');
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(objectURL);
-              showMessage('Download successful.');
-            } else {
-              showMessage('Failed to download media.');
-            }
-          } catch (error) {
-            showMessage('Failed to download media: ' + error.message);
-          }
-        }
-
-        function showMessage(message) {
-          var messageContainer = document.getElementById("message-container");
-          messageContainer.innerText = message;
-          messageContainer.style.opacity = 1;
-          setTimeout(function () {
-            messageContainer.style.opacity = 0;
-          }, 5000);
-        }
-        // END DOWNLOAD MEDIA
-
-        function showLoadingIndicator() {
-          $('#loading-indicator').show();
-        }
-
-        function hideLoadingIndicator() {
-          $('#loading-indicator').hide();
-        }
-
-        $('#d-file, #d-audio, #d-gif, #d-pscreen').addClass('disabled');
-
-        $(function () {
-          $('form').submit(function (e) {
-            e.preventDefault();
-            const yturl = $('.url').val().trim();
-
-            if (yturl === '') {
-              showMessage('Please enter a URL.');
-              return;
-            }
-
-            const regex = /(youtu(?:\.be|be\.com)\/(?:.*v(?:\/|=)|(?:.*\/)?)([\w'-]+))/i;
-            const ytid = yturl.match(regex);
-
-            if (ytid) {
-              if (ytid[2].length === 11) {
-                player.loadVideoById(ytid[2], 0);
-                $('.player-timing input').val('0:00:00.0');
-              } else {
-                showMessage('Invalid YouTube ID! Please verify the link again.');
-              }
-            } else {
-              showMessage('Invalid YouTube URL! Please copy the link again.');
-            }
-          });
-        });
-
-        // PING FUNCTION
-        async function updatePingDisplay(latency) {
-          const pingValueElement = document.getElementById('ping-value');
-          pingValueElement.classList.remove('online', 'offline');
-
-          if (typeof latency === 'number') {
-            pingValueElement.textContent = 'Online';
-            pingValueElement.classList.add('online');
-          } else {
-            pingValueElement.textContent = 'Offline';
-            pingValueElement.classList.add('offline');
-          }
-        }
-
-        async function pingServer() {
-          const serverUrl = 'https://c932a2a5-2dde-4763-abd8-87e0fd85c4d4-00-3194zsef37244.kirk.replit.dev/ping';
-          try {
-            const startTime = performance.now();
-            const response = await fetch(serverUrl, { method: 'HEAD', cache: 'no-cache' });
-            const endTime = performance.now();
-
-            if (response.ok) {
-              const latency = endTime - startTime;
-              updatePingDisplay(latency);
-            } else {
-              throw new Error(`Server returned ${response.status} ${response.statusText}`);
-            }
-          } catch (error) {
-            console.error('Server is offline', error);
-            showMessage(`Server is offline: ${error.message}`);
-            updatePingDisplay(undefined);
-          }
-        }
-
-        pingServer();
-
-        setInterval(pingServer, 5000);
-
-        // Detect links from keyboard input
-        $('.url').on('input', function () {
-          const url = $(this).val().trim();
-
-          if (url === '') {
-            showMessage('Please enter a URL.');
-            return;
-          }
-
-          const socialMediaRegex = {
-            youtube: /(youtu(?:\.be|be\.com)\/(?:.*v(?:\/|=)|(?:.*\/)?)([\w'-]+))/i,
-            facebook: /(https?:\/\/(www\.)?facebook\.com\/.*)/i,
-            instagram: /(https?:\/\/(www\.)?instagram\.com\/.*)/i,
-            twitter: /(https?:\/\/(www\.)?twitter\.com\/.*)/i,
-          };
-
-          let isValid = false;
-          for (const [platform, regex] of Object.entries(socialMediaRegex)) {
-            if (regex.test(url)) {
-              isValid = true;
-              break;
-            }
-          }
-
-          if (!isValid) {
-            showMessage('Invalid URL! Please provide a valid link from YouTube, Facebook, Instagram, or Twitter.');
-            return;
-          }
-
-          // Automatically process the URL if it's valid
-          $('form').submit();
-        });
-
-        // Help button functionality
-        $(document).ready(function () {
-          setTimeout(function () {
-            $('#help-button').css('opacity', '1');
-          }, 2000);
-
-          $('#help-button').click(function () {
-            $('#help-message').css('opacity', '1');
-            setTimeout(function () {
-              $('#help-message').css('opacity', '0');
-            }, 10000);
-          });
-        });
-      </script>
-    </body>
-    </html>
