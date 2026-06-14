@@ -26,6 +26,8 @@ export default function Home() {
   const [previewTitle, setPreviewTitle] = useState('');
   const [previewDuration, setPreviewDuration] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [previewThumbnail, setPreviewThumbnail] = useState('');
+  const [previewUploader, setPreviewUploader] = useState('');
 
   const recentDownloads = state.downloads.filter(d => d.status === 'completed').slice(0, 3);
 
@@ -47,12 +49,16 @@ export default function Home() {
           if (info) {
             setPreviewTitle(info.title || `Video from ${platform}`);
             setPreviewDuration(info.duration || '0:00');
+            setPreviewThumbnail((info as any).thumbnail || '');
+            setPreviewUploader((info as any).uploader || '');
             setDetectedPlatform(info.platform);
             setShowPreview(true);
           } else {
             // Fallback
             setPreviewTitle(`Video from ${platform.charAt(0).toUpperCase() + platform.slice(1)}`);
             setPreviewDuration('0:00');
+            setPreviewThumbnail('');
+            setPreviewUploader('');
             setShowPreview(true);
           }
         } else {
@@ -164,7 +170,7 @@ export default function Home() {
             className="flex-1 h-14 px-3 text-[14px] text-[#1B2A4A] placeholder:text-[#6B7FA3] bg-transparent outline-none"
           />
           {url && (
-            <button onClick={() => { setUrl(''); setShowPreview(false); }} className="p-2 mr-2">
+            <button onClick={() => { setUrl(''); setShowPreview(false); setPreviewThumbnail(''); setPreviewUploader(''); }} className="p-2 mr-2">
               <X size={18} className="text-[#6B7FA3]" />
             </button>
           )}
@@ -239,12 +245,30 @@ export default function Home() {
               </span>
             </div>
 
-            {/* Title */}
-            <div className="mb-4">
-              <p className="text-[15px] text-[#1B2A4A] line-clamp-2 leading-snug">{previewTitle}</p>
-              {previewDuration && previewDuration !== '0:00' && (
-                <p className="text-[13px] text-[#6B7FA3] mt-0.5">{previewDuration}</p>
+            {/* Thumbnail + Title */}
+            <div className="flex gap-3 mb-4">
+              {previewThumbnail ? (
+                <img
+                  src={previewThumbnail}
+                  alt="thumbnail"
+                  className="w-20 h-14 rounded-xl object-cover flex-shrink-0 bg-[#F2F4F8]"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              ) : (
+                <div className="w-20 h-14 rounded-xl flex-shrink-0 flex items-center justify-center"
+                  style={{ backgroundColor: `${platformData[detectedPlatform]?.color}15` }}>
+                  <div className="w-6 h-6 rounded-full" style={{ backgroundColor: platformData[detectedPlatform]?.color }} />
+                </div>
               )}
+              <div className="flex-1 min-w-0">
+                <p className="text-[15px] text-[#1B2A4A] line-clamp-2 leading-snug">{previewTitle}</p>
+                {previewUploader && (
+                  <p className="text-[12px] text-[#6B7FA3] mt-0.5 truncate">{previewUploader}</p>
+                )}
+                {previewDuration && previewDuration !== '0:00' && (
+                  <p className="text-[12px] text-[#6B7FA3] mt-0.5">{previewDuration}</p>
+                )}
+              </div>
             </div>
 
             {/* Format Selector */}

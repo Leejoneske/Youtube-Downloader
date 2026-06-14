@@ -170,7 +170,7 @@ interface AppContextType {
   setTab: (tab: Tab) => void;
   showToast: (message: string) => void;
   detectPlatform: (url: string) => Platform;
-  analyzeUrl: (url: string) => Promise<{ title: string; thumbnail: string; duration: string; platform: Platform; formats: string[]; qualities: string[]; fileSize: string } | null>;
+  analyzeUrl: (url: string) => Promise<{ title: string; thumbnail: string; duration: string; uploader: string; platform: Platform; formats: string[]; qualities: string[]; fileSize: string } | null>;
   startDownload: (url: string, title: string, thumbnail: string, duration: string, platform: Platform, format: DownloadFormat, quality: VideoQuality, fileSize: string) => Promise<void>;
   downloadFile: (id: string, title: string) => void;
 }
@@ -268,6 +268,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           title: data.title,
           thumbnail: data.thumbnail,
           duration: data.duration,
+          uploader: data.uploader || '',
           platform: data.platform as Platform,
           formats: data.formats,
           qualities: data.qualities,
