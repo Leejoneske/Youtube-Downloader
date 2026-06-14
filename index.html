@@ -1,83 +1,12 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YouTube Downloader — Modern Rebuild</title>
-  <meta name="description" content="A modern YouTube downloader companion that validates links, previews videos, and generates ready-to-run yt-dlp commands." />
-  <link rel="icon" href="images/newFav.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <main class="container">
-    <header class="hero">
-      <h1>YouTube Downloader</h1>
-      <p>Reliable, lightweight, and actually maintainable.</p>
-    </header>
-
-    <section class="card">
-      <form id="url-form" autocomplete="off">
-        <label for="video-url">YouTube URL</label>
-        <div class="row">
-          <input id="video-url" type="url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" required />
-          <button type="submit">Analyze</button>
-        </div>
-      </form>
-      <p id="status" aria-live="polite"></p>
-    </section>
-
-    <section class="card" id="preview-section" hidden>
-      <h2>Preview & Download Setup</h2>
-      <div class="iframe-wrap"><iframe id="yt-preview" title="YouTube preview" loading="lazy" allowfullscreen></iframe></div>
-
-      <div class="grid two">
-        <div>
-          <label for="quality">Video quality</label>
-          <select id="quality">
-            <option value="best" selected>Best available</option>
-            <option value="1080">1080p</option>
-            <option value="720">720p</option>
-            <option value="480">480p</option>
-          </select>
-        </div>
-        <div>
-          <label for="audio-format">Audio format</label>
-          <select id="audio-format">
-            <option value="mp3" selected>mp3</option>
-            <option value="m4a">m4a</option>
-            <option value="wav">wav</option>
-          </select>
-        </div>
-      </div>
-
-      <label for="file-prefix">Output name (optional)</label>
-      <input id="file-prefix" type="text" placeholder="my-video" maxlength="80" />
-
-      <div class="actions">
-        <button id="copy-video-cmd" type="button">Copy video command</button>
-        <button id="copy-audio-cmd" type="button">Copy audio command</button>
-        <button id="copy-playlist-cmd" type="button">Copy playlist-safe command</button>
-        <a id="open-link" target="_blank" rel="noopener noreferrer">Open original link</a>
-      </div>
-
-      <label for="command-output">Command preview</label>
-      <textarea id="command-output" rows="5" readonly></textarea>
-    </section>
-
-    <section class="card">
-      <h2>Quick start (2 minutes)</h2>
-      <ol>
-        <li>Install yt-dlp: <code>python -m pip install -U yt-dlp</code></li>
-        <li>Install ffmpeg (recommended for best merges/audio extraction).</li>
-        <li>Paste a YouTube URL above and copy a command.</li>
-      </ol>
-      <details>
-        <summary>Why this architecture?</summary>
-        <p>Direct browser-side downloading from YouTube is blocked by platform restrictions and CORS. This app focuses on a reliable command workflow that works locally and stays future-proof.</p>
-      </details>
-    </section>
-  </main>
-
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SaveClip</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
