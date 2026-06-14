@@ -299,14 +299,19 @@ app.get('/{*splat}', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ SaveClip API server running on port ${PORT}`);
-  console.log('');
-  console.log('📡 API Endpoints:');
-  console.log(`   POST /api/analyze       - Analyze a video URL`);
-  console.log(`   POST /api/download      - Start a download`);
-  console.log(`   GET  /api/download/:id  - Check progress & download file`);
-  console.log(`   GET  /api/downloads     - List all downloads`);
-  console.log('');
-  console.log(`🌐 Frontend: http://localhost:${PORT}`);
-});
+// Export for Vercel serverless — only listen when running directly (local dev)
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`✅ SaveClip API server running on port ${PORT}`);
+    console.log('');
+    console.log('📡 API Endpoints:');
+    console.log(`   POST /api/analyze       - Analyze a video URL`);
+    console.log(`   POST /api/download      - Start a download`);
+    console.log(`   GET  /api/download/:id  - Check progress & download file`);
+    console.log(`   GET  /api/downloads     - List all downloads`);
+    console.log('');
+    console.log(`🌐 Frontend: http://localhost:${PORT}`);
+  });
+}
+
+export default app;
