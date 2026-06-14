@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Check, Clock, MoreHorizontal, Trash2, Share2, FileText } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import type { DownloadItem } from '@/types';
+import PlatformIcon from '@/components/PlatformIcon';
 
 const platformColors: Record<string, string> = {
   youtube: '#FF0000',
@@ -159,10 +160,7 @@ export default function Downloads() {
                   <div className="flex-1 min-w-0">
                     <p className="text-[15px] text-[#1B2A4A] truncate">{item.title}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: platformColors[item.platform] || '#6B7FA3' }}
-                      />
+                      <PlatformIcon platform={item.platform} size={12} />
                       <span className="text-[12px] text-[#6B7FA3]">
                         {platformNames[item.platform] || 'Unknown'}
                       </span>

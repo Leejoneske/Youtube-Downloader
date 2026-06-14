@@ -4,6 +4,7 @@ import { Link, X, Download, Check } from 'lucide-react';
 import Marquee from 'react-fast-marquee';
 import { useApp } from '@/context/AppContext';
 import type { Platform, DownloadFormat, VideoQuality } from '@/types';
+import PlatformIcon from '@/components/PlatformIcon';
 
 const platformData: Record<string, { color: string; name: string }> = {
   youtube: { color: '#FF0000', name: 'YouTube' },
@@ -143,10 +144,10 @@ export default function Home() {
           {Object.entries(platformData).map(([key, data]) => (
             <div key={key} className="flex items-center gap-1.5 mx-4">
               <div
-                className="w-8 h-8 rounded-full flex items-center justify-center"
+                className="w-8 h-8 rounded-xl flex items-center justify-center"
                 style={{ backgroundColor: `${data.color}15` }}
               >
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: data.color }} />
+                <PlatformIcon platform={key} size={18} />
               </div>
               <span className="text-[13px] text-[#6B7FA3]">{data.name}</span>
             </div>
@@ -235,7 +236,7 @@ export default function Home() {
                 className="w-6 h-6 rounded-full flex items-center justify-center"
                 style={{ backgroundColor: `${platformData[detectedPlatform]?.color}15` }}
               >
-                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: platformData[detectedPlatform]?.color }} />
+                <PlatformIcon platform={detectedPlatform} size={12} />
               </div>
               <span className="text-[13px] font-medium" style={{ color: platformData[detectedPlatform]?.color }}>
                 {platformData[detectedPlatform]?.name}
@@ -257,7 +258,7 @@ export default function Home() {
               ) : (
                 <div className="w-20 h-14 rounded-xl flex-shrink-0 flex items-center justify-center"
                   style={{ backgroundColor: `${platformData[detectedPlatform]?.color}15` }}>
-                  <div className="w-6 h-6 rounded-full" style={{ backgroundColor: platformData[detectedPlatform]?.color }} />
+                  <PlatformIcon platform={detectedPlatform} size={28} />
                 </div>
               )}
               <div className="flex-1 min-w-0">
@@ -381,7 +382,7 @@ export default function Home() {
               >
                 <div className="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center"
                   style={{ backgroundColor: `${platformData[item.platform]?.color || '#6B7FA3'}15` }}>
-                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: platformData[item.platform]?.color || '#6B7FA3' }} />
+                  <PlatformIcon platform={item.platform} size={22} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[15px] text-[#1B2A4A] truncate">{item.title}</p>
