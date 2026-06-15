@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Crown, Cloud, Bell, Moon, Wifi, HelpCircle, Shield, FileText,
-  Star, Trash2, ChevronRight, AlertTriangle, X, Mail, MessageCircle,
+  Star, Trash2, ChevronRight, AlertTriangle, Mail,
   Check, Download, Folder
 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
