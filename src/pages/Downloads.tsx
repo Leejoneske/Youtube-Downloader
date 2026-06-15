@@ -5,16 +5,6 @@ import { useApp } from '@/context/AppContext';
 import type { DownloadItem } from '@/types';
 import PlatformIcon from '@/components/PlatformIcon';
 
-const platformColors: Record<string, string> = {
-  youtube: '#FF0000',
-  tiktok: '#000000',
-  instagram: '#E4405F',
-  twitter: '#1DA1F2',
-  facebook: '#1877F2',
-  reddit: '#FF4500',
-  soundcloud: '#FF5500',
-  unknown: '#6B7FA3',
-};
 
 const platformNames: Record<string, string> = {
   youtube: 'YouTube',

@@ -253,7 +253,7 @@ export default function Home() {
                   src={previewThumbnail}
                   alt="thumbnail"
                   className="w-20 h-14 rounded-xl object-cover flex-shrink-0 bg-[#F2F4F8]"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  onError={() => setPreviewThumbnail('')}
                 />
               ) : (
                 <div className="w-20 h-14 rounded-xl flex-shrink-0 flex items-center justify-center"

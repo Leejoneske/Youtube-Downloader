@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { AppProvider, useApp } from '@/context/AppContext';
 import BottomNav from '@/components/BottomNav';
 import Toast from '@/components/Toast';
@@ -10,6 +11,14 @@ import Onboarding from '@/pages/Onboarding';
 
 function AppContent() {
   const { state } = useApp();
+
+  useEffect(() => {
+    if (state.settings.darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [state.settings.darkMode]);
 
   // Show onboarding if user hasn't seen it
   if (!state.hasSeenOnboarding) {
