@@ -111,10 +111,10 @@ export default function Home() {
       <div className="flex items-center justify-between px-5 pt-3 pb-2">
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-semibold text-[#1B2A4A] bg-[#FFF0EB] px-3 py-1.5 rounded-lg">
-            🎬 {state.downloads.filter(d => d.status === 'completed').length}
+            馃幀 {state.downloads.filter(d => d.status === 'completed').length}
           </span>
           <span className="text-[11px] font-semibold text-[#1B2A4A] bg-[#FFF0EB] px-3 py-1.5 rounded-lg">
-            ⭐ {state.downloads.length}
+            猸� {state.downloads.length}
           </span>
         </div>
         <div className="flex items-center gap-1">
@@ -167,7 +167,7 @@ export default function Home() {
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Paste video or audio link here…"
+            placeholder="Paste video or audio link here鈥�"
             className="flex-1 h-14 px-3 text-[14px] text-[#1B2A4A] placeholder:text-[#6B7FA3] bg-transparent outline-none"
           />
           {url && (
@@ -180,14 +180,7 @@ export default function Home() {
               <div className="w-5 h-5 border-2 border-[#F26B3A] border-t-transparent rounded-full animate-spin" />
             </div>
           )}
-          {showPreview && detectedPlatform !== 'unknown' && !isAnalyzing && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="w-6 h-6 rounded-full mr-3 flex-shrink-0"
-              style={{ backgroundColor: platformData[detectedPlatform]?.color }}
-            />
-          )}
+
         </div>
 
         {/* Quick Action Chips */}
@@ -196,13 +189,13 @@ export default function Home() {
             onClick={handlePaste}
             className="flex-shrink-0 snap-start bg-white border border-[#E2E8F0] rounded-xl px-3.5 py-2 text-[13px] text-[#6B7FA3] font-medium active:scale-95 transition-transform"
           >
-            📋 Paste
+            馃搵 Paste
           </button>
           <button
             onClick={() => showToast('Browse feature coming soon')}
             className="flex-shrink-0 snap-start bg-white border border-[#E2E8F0] rounded-xl px-3.5 py-2 text-[13px] text-[#6B7FA3] font-medium active:scale-95 transition-transform"
           >
-            📁 Browse
+            馃搧 Browse
           </button>
           <button
             onClick={() => {
@@ -215,7 +208,7 @@ export default function Home() {
             }}
             className="flex-shrink-0 snap-start bg-white border border-[#E2E8F0] rounded-xl px-3.5 py-2 text-[13px] text-[#6B7FA3] font-medium active:scale-95 transition-transform"
           >
-            📎 Recent
+            馃搸 Recent
           </button>
         </div>
       </div>
@@ -286,7 +279,7 @@ export default function Home() {
                         : 'bg-white border border-[#E2E8F0] text-[#6B7FA3]'
                     }`}
                   >
-                    {f === 'video' ? '🎬 Video' : '🎵 Audio'}
+                    {f === 'video' ? '馃幀 Video' : '馃幍 Audio'}
                   </button>
                 ))}
               </div>
@@ -334,11 +327,11 @@ export default function Home() {
               {isDownloading ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Starting…
+                  Starting鈥�
                 </>
               ) : (
                 <>
-                  <span className="text-lg">⬇</span> Download Now
+                  <span className="text-lg">猬�</span> Download Now
                   <span className="text-[13px] font-normal opacity-80">({getFileSize()})</span>
                 </>
               )}
@@ -368,7 +361,7 @@ export default function Home() {
               onClick={() => dispatch({ type: 'SET_TAB', tab: 'downloads' })}
               className="text-[13px] font-medium text-[#F26B3A]"
             >
-              See All →
+              See All 鈫�
             </button>
           </div>
           <div className="space-y-3">
@@ -387,7 +380,7 @@ export default function Home() {
                 <div className="flex-1 min-w-0">
                   <p className="text-[15px] text-[#1B2A4A] truncate">{item.title}</p>
                   <p className="text-[13px] text-[#6B7FA3]">
-                    {platformData[item.platform]?.name || item.platform} · {item.format} · {item.quality}
+                    {platformData[item.platform]?.name || item.platform} 路 {item.format} 路 {item.quality}
                   </p>
                 </div>
                 <Check size={18} className="text-[#34C759] flex-shrink-0" />
@@ -398,7 +391,7 @@ export default function Home() {
       )}
 
       {/* Empty state */}
-      {recentDownloads.length === 0 && state.downloads.length === 0 && (
+      {recentDownloads.length === 0 && state.downloads.length === 0 && !url && (
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -418,4 +411,4 @@ export default function Home() {
       )}
     </div>
   );
-}
+                    }
