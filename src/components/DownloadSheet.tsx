@@ -80,9 +80,14 @@ export default function DownloadSheet() {
 
   const handleDownloadFile = () => {
     if (!download) return;
-    // Open the download in a new tab - the backend will stream it
-    const downloadUrl = `${API_BASE}/api/download/${download.id}/file`;
-    window.open(downloadUrl, '_blank');
+    // Use the direct streaming endpoint — works on Vercel and Replit
+    const params = new URLSearchParams({
+      url: download.url,
+      format: download.format || 'video',
+      quality: download.quality || '720p',
+      title: download.title || 'video',
+    });
+    window.open(`${API_BASE}/api/direct-download?${params}`, '_blank');
   };
 
   const handleShare = async () => {
