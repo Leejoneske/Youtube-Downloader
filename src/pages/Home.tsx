@@ -140,7 +140,7 @@ export default function Home() {
 
       {/* Platform Marquee */}
       <div className="px-5 py-3">
-        <Marquee speed={30} gradient gradientWidth={40} gradientColor="#F2F4F8">
+        <Marquee speed={30} gradient gradientWidth={80} gradientColor="#F2F4F8">
           {Object.entries(platformData).map(([key, data]) => (
             <div key={key} className="flex items-center gap-1.5 mx-4">
               <div
