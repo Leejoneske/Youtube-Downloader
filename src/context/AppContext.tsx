@@ -1,21 +1,7 @@
-import React, { createContext, useContext, useReducer, useCallback, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
 import type { Tab, DownloadItem, AppSettings, AppState, DownloadFormat, VideoQuality, Platform } from '@/types';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
-
-async function apiPost(endpoint: string, body: unknown) {
-  const res = await fetch(`${API_BASE}${endpoint}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  return res.json();
-}
-
-async function apiGet(endpoint: string) {
-  const res = await fetch(`${API_BASE}${endpoint}`);
-  return res.json();
-}
 
 type Action =
   | { type: 'SET_TAB'; tab: Tab }
@@ -74,31 +60,20 @@ const initialState: AppState = {
 
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
-    case 'SET_TAB':
-      return { ...state, currentTab: action.tab };
-    case 'ADD_DOWNLOAD':
-      return { ...state, downloads: [action.item, ...state.downloads] };
+    case 'SET_TAB': return { ...state, currentTab: action.tab };
+    case 'ADD_DOWNLOAD': return { ...state, downloads: [action.item, ...state.downloads] };
     case 'UPDATE_DOWNLOAD':
       return {
         ...state,
-        downloads: state.downloads.map(d =>
-          d.id === action.id ? { ...d, ...action.updates } : d
-        ),
+        downloads: state.downloads.map(d => d.id === action.id ? { ...d, ...action.updates } : d),
       };
-    case 'SET_DOWNLOADS':
-      return { ...state, downloads: action.downloads };
-    case 'DELETE_DOWNLOAD':
-      return { ...state, downloads: state.downloads.filter(d => d.id !== action.id) };
-    case 'CLEAR_DOWNLOADS':
-      return { ...state, downloads: [] };
-    case 'UPDATE_SETTINGS':
-      return { ...state, settings: { ...state.settings, ...action.settings } };
-    case 'COMPLETE_ONBOARDING':
-      return { ...state, hasSeenOnboarding: true };
-    case 'SHOW_TOAST':
-      return { ...state, toast: { message: action.message, visible: true } };
-    case 'HIDE_TOAST':
-      return { ...state, toast: null };
+    case 'SET_DOWNLOADS': return { ...state, downloads: action.downloads };
+    case 'DELETE_DOWNLOAD': return { ...state, downloads: state.downloads.filter(d => d.id !== action.id) };
+    case 'CLEAR_DOWNLOADS': return { ...state, downloads: [] };
+    case 'UPDATE_SETTINGS': return { ...state, settings: { ...state.settings, ...action.settings } };
+    case 'COMPLETE_ONBOARDING': return { ...state, hasSeenOnboarding: true };
+    case 'SHOW_TOAST': return { ...state, toast: { message: action.message, visible: true } };
+    case 'HIDE_TOAST': return { ...state, toast: null };
     case 'START_DOWNLOAD':
       return {
         ...state,
@@ -108,18 +83,11 @@ function reducer(state: AppState, action: Action): AppState {
       };
     case 'UPDATE_PROGRESS': {
       if (!state.activeDownload) return state;
-      const updated = {
-        ...state.activeDownload,
-        progress: action.progress,
-        status: action.status,
-        downloadedSize: action.downloadedSize,
-      };
+      const updated = { ...state.activeDownload, progress: action.progress, status: action.status, downloadedSize: action.downloadedSize };
       return {
         ...state,
         activeDownload: updated,
-        downloads: state.downloads.map(d =>
-          d.id === updated.id ? updated : d
-        ),
+        downloads: state.downloads.map(d => d.id === updated.id ? updated : d),
       };
     }
     case 'COMPLETE_ACTIVE_DOWNLOAD': {
@@ -133,34 +101,23 @@ function reducer(state: AppState, action: Action): AppState {
       return {
         ...state,
         activeDownload: completed,
-        downloads: state.downloads.map(d =>
-          d.id === completed.id ? completed : d
-        ),
-        toast: { message: 'Download complete! Tap "Save to Device" to download.', visible: true },
+        downloads: state.downloads.map(d => d.id === completed.id ? completed : d),
+        toast: { message: 'Download ready! Tap "Save to Device" to save.', visible: true },
       };
     }
     case 'FAIL_ACTIVE_DOWNLOAD': {
       if (!state.activeDownload) return state;
-      const failed = {
-        ...state.activeDownload,
-        progress: 0,
-        status: 'failed' as const,
-      };
+      const failed = { ...state.activeDownload, progress: 0, status: 'failed' as const };
       return {
         ...state,
         activeDownload: failed,
-        downloads: state.downloads.map(d =>
-          d.id === failed.id ? failed : d
-        ),
+        downloads: state.downloads.map(d => d.id === failed.id ? failed : d),
         toast: { message: action.error, visible: true },
       };
     }
-    case 'SHOW_DOWNLOAD_SHEET':
-      return { ...state, showDownloadSheet: action.show };
-    case 'RESET_ACTIVE_DOWNLOAD':
-      return { ...state, activeDownload: null, showDownloadSheet: false };
-    default:
-      return state;
+    case 'SHOW_DOWNLOAD_SHEET': return { ...state, showDownloadSheet: action.show };
+    case 'RESET_ACTIVE_DOWNLOAD': return { ...state, activeDownload: null, showDownloadSheet: false };
+    default: return state;
   }
 }
 
@@ -172,14 +129,13 @@ interface AppContextType {
   detectPlatform: (url: string) => Platform;
   analyzeUrl: (url: string) => Promise<{ title: string; thumbnail: string; duration: string; uploader: string; platform: Platform; formats: string[]; qualities: string[]; fileSize: string } | null>;
   startDownload: (url: string, title: string, thumbnail: string, duration: string, platform: Platform, format: DownloadFormat, quality: VideoQuality, fileSize: string) => Promise<void>;
-  downloadFile: (id: string, title: string) => void;
+  downloadFile: (item: DownloadItem) => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const backendAvailable = useRef<boolean | null>(null);
 
   useEffect(() => {
     const toSave = {
@@ -192,20 +148,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (state.toast?.visible) {
-      const timer = setTimeout(() => {
-        dispatch({ type: 'HIDE_TOAST' });
-      }, 3000);
+      const timer = setTimeout(() => dispatch({ type: 'HIDE_TOAST' }), 3000);
       return () => clearTimeout(timer);
     }
   }, [state.toast]);
 
-  const setTab = useCallback((tab: Tab) => {
-    dispatch({ type: 'SET_TAB', tab });
-  }, []);
-
-  const showToast = useCallback((message: string) => {
-    dispatch({ type: 'SHOW_TOAST', message });
-  }, []);
+  const setTab = useCallback((tab: Tab) => dispatch({ type: 'SET_TAB', tab }), []);
+  const showToast = useCallback((message: string) => dispatch({ type: 'SHOW_TOAST', message }), []);
 
   const detectPlatform = useCallback((url: string): Platform => {
     const lower = url.toLowerCase();
@@ -219,50 +168,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return 'unknown';
   }, []);
 
-  const checkBackend = useCallback(async () => {
-    if (backendAvailable.current !== null) return backendAvailable.current;
-    try {
-      const res = await fetch(`${API_BASE}/api/downloads`, { method: 'GET', signal: AbortSignal.timeout(3000) });
-      backendAvailable.current = res.ok;
-      return res.ok;
-    } catch {
-      backendAvailable.current = false;
-      return false;
-    }
-  }, []);
-
-  const simulateDownload = useCallback((_id: string, fileSize: string) => {
-    // Simulate frontend progress animation
-    const intervals = [
-      { progress: 15, size: '7.2 MB', delay: 800, status: 'analyzing' as const },
-      { progress: 32, size: '15.4 MB', delay: 1600, status: 'downloading' as const },
-      { progress: 48, size: '23.1 MB', delay: 2400, status: 'downloading' as const },
-      { progress: 65, size: '31.3 MB', delay: 3200, status: 'downloading' as const },
-      { progress: 82, size: '39.5 MB', delay: 4000, status: 'downloading' as const },
-      { progress: 95, size: '45.8 MB', delay: 4800, status: 'downloading' as const },
-    ];
-
-    intervals.forEach(({ progress, size, delay, status }) => {
-      setTimeout(() => {
-        dispatch({ type: 'UPDATE_PROGRESS', progress, status, downloadedSize: size });
-      }, delay);
-    });
-
-    setTimeout(() => {
-      dispatch({ type: 'UPDATE_PROGRESS', progress: 99, status: 'saving', downloadedSize: fileSize });
-    }, 5600);
-
-    setTimeout(() => {
-      dispatch({ type: 'COMPLETE_ACTIVE_DOWNLOAD' });
-    }, 6400);
-  }, []);
-
   const analyzeUrl = useCallback(async (url: string) => {
-    const hasBackend = await checkBackend();
-    if (!hasBackend) return null; // Will use fallback in Home component
-
     try {
-      const data = await apiPost('/api/analyze', { url });
+      const res = await fetch(`${API_BASE}/api/analyze`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+        signal: AbortSignal.timeout(12000),
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
       if (data.success) {
         return {
           title: data.title,
@@ -279,7 +194,23 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } catch {
       return null;
     }
-  }, [checkBackend]);
+  }, []);
+
+  // Trigger real browser download via direct-stream endpoint
+  const downloadFile = useCallback((item: DownloadItem) => {
+    const params = new URLSearchParams({
+      url: item.url,
+      format: item.format || 'video',
+      quality: item.quality || '720p',
+      title: item.title || 'video',
+    });
+    const link = document.createElement('a');
+    link.href = `${API_BASE}/api/direct-download?${params}`;
+    link.download = item.title || 'video';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, []);
 
   const startDownload = useCallback(async (
     url: string,
@@ -293,15 +224,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   ) => {
     const id = Date.now().toString();
     const item: DownloadItem = {
-      id,
-      url,
-      title,
-      platform,
-      thumbnail,
-      duration,
-      format,
-      quality,
-      fileSize,
+      id, url, title, platform, thumbnail, duration,
+      format, quality, fileSize,
       downloadedSize: '0 MB',
       progress: 0,
       status: 'analyzing',
@@ -310,73 +234,35 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     dispatch({ type: 'START_DOWNLOAD', item });
 
-    const hasBackend = await checkBackend();
+    // Step 1: Animate through analyzing → downloading → saving
+    const steps = [
+      { progress: 15, downloadedSize: '0 MB', status: 'analyzing' as const, delay: 600 },
+      { progress: 35, downloadedSize: '0 MB', status: 'downloading' as const, delay: 1400 },
+      { progress: 60, downloadedSize: '0 MB', status: 'downloading' as const, delay: 2400 },
+      { progress: 80, downloadedSize: '0 MB', status: 'downloading' as const, delay: 3200 },
+      { progress: 90, downloadedSize: '0 MB', status: 'saving' as const, delay: 4000 },
+    ];
 
-    if (!hasBackend) {
-      // Fallback: simulate download
-      simulateDownload(id, fileSize);
-      return;
-    }
+    steps.forEach(({ progress, downloadedSize, status, delay }) => {
+      setTimeout(() => {
+        dispatch({ type: 'UPDATE_PROGRESS', progress, status, downloadedSize });
+      }, delay);
+    });
 
-    try {
-      const data = await apiPost('/api/download', { url, format, quality, title });
+    // Step 2: Complete after short animation, then trigger real download
+    setTimeout(() => {
+      dispatch({ type: 'COMPLETE_ACTIVE_DOWNLOAD' });
+      // Auto-trigger the actual file download
+      const params = new URLSearchParams({ url, format, quality, title: title || 'video' });
+      const link = document.createElement('a');
+      link.href = `${API_BASE}/api/direct-download?${params}`;
+      link.download = title || 'video';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }, 4800);
 
-      if (!data.success) {
-        dispatch({ type: 'FAIL_ACTIVE_DOWNLOAD', error: data.error || 'Failed to start' });
-        return;
-      }
-
-      const backendId = data.id;
-
-      // Poll for progress
-      let pollCount = 0;
-      const pollInterval = setInterval(async () => {
-        try {
-          pollCount++;
-          const progress = await apiGet(`/api/download/${backendId}/progress`);
-
-          if (progress.status === 'completed') {
-            clearInterval(pollInterval);
-            dispatch({ type: 'COMPLETE_ACTIVE_DOWNLOAD', downloadUrl: progress.downloadUrl });
-          } else if (progress.status === 'failed') {
-            clearInterval(pollInterval);
-            dispatch({ type: 'FAIL_ACTIVE_DOWNLOAD', error: progress.error || 'Unknown error' });
-          } else if (progress.status === 'downloading') {
-            // Frontend progress animation synced with backend
-            const simulatedProgress = Math.min(95, 10 + pollCount * 15);
-            dispatch({
-              type: 'UPDATE_PROGRESS',
-              progress: simulatedProgress,
-              status: 'downloading',
-              downloadedSize: progress.downloadedSize || `${Math.floor(simulatedProgress * 0.5)} MB`
-            });
-          }
-
-          // Timeout after 60 polls (90 seconds)
-          if (pollCount > 60) {
-            clearInterval(pollInterval);
-            dispatch({ type: 'FAIL_ACTIVE_DOWNLOAD', error: 'Download timed out' });
-          }
-        } catch {
-          // Keep polling on network errors
-        }
-      }, 1500);
-    } catch (error) {
-      // Fallback to simulation on network error
-      simulateDownload(id, fileSize);
-    }
-  }, [checkBackend, simulateDownload]);
-
-  const downloadFile = useCallback((id: string, title: string) => {
-    const link = document.createElement('a');
-    link.href = `${API_BASE}/api/download/${id}/file`;
-    link.download = `${title}.mp4`;
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    showToast('Download started!');
-  }, [showToast]);
+  }, []);
 
   return (
     <AppContext.Provider value={{ state, dispatch, setTab, showToast, detectPlatform, analyzeUrl, startDownload, downloadFile }}>
