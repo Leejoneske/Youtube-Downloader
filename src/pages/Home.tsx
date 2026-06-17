@@ -184,9 +184,11 @@ export default function Home() {
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="w-6 h-6 rounded-full mr-3 flex-shrink-0"
-              style={{ backgroundColor: platformData[detectedPlatform]?.color }}
-            />
+              className="w-6 h-6 rounded-full mr-3 flex-shrink-0 flex items-center justify-center"
+              style={{ backgroundColor: `${platformData[detectedPlatform]?.color}15` }}
+            >
+              <PlatformIcon platform={detectedPlatform} size={12} />
+            </motion.div>
           )}
         </div>
 
@@ -398,7 +400,7 @@ export default function Home() {
       )}
 
       {/* Empty state */}
-      {recentDownloads.length === 0 && state.downloads.length === 0 && (
+      {recentDownloads.length === 0 && state.downloads.length === 0 && !showPreview && (
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
